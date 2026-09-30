@@ -1,0 +1,47 @@
+# === Node.js ===
+node_modules/
+npm-debug.log*
+.env
+dist/
+
+# === PlatformIO ===
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# === Python ===
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Build ===
+build/
+*.o
+*.elf
+*.bin
+*.hex
+
+# === Docker ===
+docker-compose.override.yml
+
+# === Blockchain ===
+blockchain/network/crypto-config/
+blockchain/network/channel-artifacts/
+
+# === Misc ===
+*.log
+*.tmp
+coverage/

@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="../assets/sih_logo.png" alt="Smart India Hackathon 2026" height="75"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="../assets/arishem_logo.jpeg" alt="Team Arishem Logo" height="75"/>
+</p>
+
 <h1 align="center">📋 AgriSeal — Detailed Project Report</h1>
 
 <p align="center">
@@ -159,6 +165,10 @@ The **core challenges** driving this problem:
 
 ### 3.1 Node Hardware Architecture
 
+<p align="center">
+  <img src="../assets/ppt_technical_architecture.jpg" alt="AgriSeal Technical Approach & Hardware Layer Architecture" width="85%"/>
+</p>
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    AgriSeal IoT Node v1.0                       │
@@ -259,6 +269,8 @@ The **core challenges** driving this problem:
 ## 4. System Architecture
 
 ### 4.1 High-Level Architecture
+
+![AgriSeal System Architecture with GPS Tracking](../assets/architecture_gps.jpg)
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────┐
@@ -879,32 +891,35 @@ float temp_offset[3] = {offset_0C, offset_25C, offset_50C};
 ### 8.1 Dashboard UI Description
 
 #### Real-Time Monitoring Dashboard
-- **Top Bar:** Fleet overview — total active nodes, alerts, connectivity status
-- **Center:** Interactive map showing all active shipments with color-coded risk levels
-  - 🟢 Green: All parameters within safe range
-  - 🟡 Yellow: Warning — approaching threshold
-  - 🔴 Red: Critical — threshold breached
-- **Right Panel:** Selected node's live sensor readings with animated gauges
-- **Bottom:** Recent alert feed with severity indicators
+![Real-Time Monitoring Dashboard](../assets/dashboard_screenshot.png)
+
+- **Top Bar:** Fleet overview — active nodes, live GPS position coordinates, alerts, connectivity status
+- **Metrics Grid:** Real-time sensor cards for temperature (4.1°C), humidity (88.5%), ethylene gas (14.2 ppm), GNSS live transit velocity (46.5 km/h with 8 satellite lock), and solar battery SoC
+- **Center:** Sequential Edge Sensor & GNSS Hash Stream table displaying sequence numbers, timestamps, temperature, humidity, ethylene, GPS coordinates, and cryptographic SHA-256 block digests
+- **Right Panel:** Selected node's hardware telemetry specifications and SLA breach status
 
 #### Shipment Timeline View
-- **Horizontal timeline** showing all events from shipment creation to delivery
-- **Event markers:** Temperature breaches, ownership transfers, tamper alerts
-- **Sensor charts:** Line graphs for temperature, humidity, ethylene over time
-- **Route map:** GPS trail showing exact path taken
+![Shipment Timeline View](../assets/shipment_tracker.png)
+
+- **Consignment Selector:** Interactive active consignments pane with produce grade, weight, and status
+- **Live GNSS Position Banner:** Real-time GPS coordinates (31.0542°N, 77.1950°E) near Solan Expressway Bypass with speed and "CORRIDOR GEO-FENCE: SECURE" validation
+- **Custody Provenance Timeline:** Vertical audit trail with cryptographic milestone nodes for Harvest & Sealing, Reefer Cold Logistics Loading, and Current In-Transit Supervision
+- **Action Control:** "Record Custody Handoff" modal directly invoking Hyperledger Fabric smart contract transactions
 
 #### Blockchain Ledger Explorer
-- **Transaction table:** Block number, timestamp, hash, event type
-- **Hash verification badge:** ✅ Verified / ❌ Tampered
-- **Drill-down:** Click any transaction to see full details and linked off-chain data
+![Blockchain Ledger Explorer](../assets/blockchain_ledger.png)
 
-#### Alert Management Panel
-- **Active alerts** with real-time countdown since occurrence
-- **Alert types:** Temperature breach, tamper detected, low battery, connectivity lost
-- **Notification channels:** Dashboard popup, SMS, Email, webhook
-- **Historical log:** Searchable alert history with filters
+- **Dual-Tier Cryptographic Anchor Architecture:** Visual representation of linked hash blocks (Block #1042, #1043, #1044 with previous hash pointers and Merkle roots)
+- **Committed Transaction Records:** Table showing block height, transaction identifier, UTC timestamp, chaincode method (`RecordSensorDigest`), endorsing organizations (`FarmerOrgMSP`, `LogisticsMSP`), and validation badges
+- **Raw JSON Block Verification Inspector:** Deep-dive modal displaying full cryptographic block payload, verified GPS coordinates, sensor readings, and ECDSA digital signatures
 
-### 8.2 Hardware Prototype Description
+### 8.2 Risk Assessment & Mitigation Framework (from SIH Blueprint)
+
+<p align="center">
+  <img src="../assets/risk_mitigation_table.jpg" alt="AgriSeal Risk Mitigation Matrix" width="90%"/>
+</p>
+
+### 8.3 Hardware Prototype Description
 
 #### Node PCB
 - **Dimensions:** 60mm × 40mm, 2-layer FR-4

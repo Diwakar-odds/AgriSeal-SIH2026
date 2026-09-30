@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="assets/agriseal_logo.png" alt="AgriSeal Logo" width="180"/>
+  <img src="assets/sih_logo.png" alt="Smart India Hackathon 2026" height="80"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/arishem_logo.jpeg" alt="Team Arishem Logo" height="80"/>
 </p>
 
 <h1 align="center">🌾 AgriSeal — Low-Cost IoT Blockchain Nodes for Farm-to-Fork Traceability</h1>
@@ -53,6 +55,10 @@ India's agricultural cold-chain faces critical challenges:
 
 **AgriSeal** is a low-cost, rugged IoT node that provides **tamper-evident, offline-capable** cold-chain monitoring with **blockchain-backed traceability**.
 
+<p align="center">
+  <img src="assets/core_workflow.png" alt="AgriSeal 3-Step Core Solution Flow" width="95%"/>
+</p>
+
 | Feature | How It Works |
 |---|---|
 | 🌡️ **SENSE** | Temperature, Humidity & Ethylene monitoring |
@@ -69,7 +75,12 @@ India's agricultural cold-chain faces critical challenges:
 
 ## 🏗️ System Architecture
 
-![AgriSeal System Architecture](assets/architecture.jpg)
+![AgriSeal System Architecture with GPS Tracking](assets/architecture_gps.jpg)
+
+### Layered Architecture & Hardware Stack (SIH Technical Approach)
+<p align="center">
+  <img src="assets/ppt_technical_architecture.jpg" alt="AgriSeal Technical Approach & Layered Architecture" width="85%"/>
+</p>
 
 ```
 ┌─────────────────┐     MQTT/4G      ┌──────────────────┐     Fabric SDK     ┌─────────────────────┐
@@ -211,11 +222,21 @@ The full project report with literature review, architecture details, testing re
 
 ---
 
-## 🖥️ Demo & Screenshots
+## 🖥️ Demo & UI Screenshots
 
-| Dashboard | Shipment Tracker | Blockchain Ledger |
-|---|---|---|
-| ![Dashboard](assets/dashboard_screenshot.png) | ![Tracker](assets/shipment_tracker.png) | ![Ledger](assets/blockchain_ledger.png) |
+### Real-Time IoT Telemetry Dashboard
+![Dashboard Screenshot](assets/dashboard_screenshot.png)
+
+### Consignment Lifecycle & Custody Tracking
+![Shipment Tracker](assets/shipment_tracker.png)
+
+### Hyperledger Fabric Ledger Explorer & Cryptographic Verification
+![Blockchain Ledger](assets/blockchain_ledger.png)
+
+### Risk Assessment & Mitigation Framework (from SIH Blueprint)
+<p align="center">
+  <img src="assets/risk_mitigation_table.jpg" alt="AgriSeal Risk Mitigation Matrix" width="90%"/>
+</p>
 
 ---
 

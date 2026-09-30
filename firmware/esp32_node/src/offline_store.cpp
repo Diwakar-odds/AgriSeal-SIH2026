@@ -18,7 +18,7 @@
 // ============================================================
 // Storage Constants
 // ============================================================
-#define STORAGE_MAGIC       0xAG
+#define STORAGE_MAGIC       0xAA
 #define RECORD_HEADER_SIZE  4
 #define RECORD_CRC_SIZE     2
 #define MAX_RECORD_SIZE     512

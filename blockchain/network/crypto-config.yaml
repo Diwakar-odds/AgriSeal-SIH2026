@@ -1,0 +1,32 @@
+# Cryptogen configuration for AgriSeal Consortium
+OrdererOrgs:
+  - Name: Orderer
+    Domain: agriseal.in
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: FarmerOrg
+    Domain: farmer.agriseal.in
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: LogisticsOrg
+    Domain: logistics.agriseal.in
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+
+  - Name: RetailerOrg
+    Domain: retailer.agriseal.in
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

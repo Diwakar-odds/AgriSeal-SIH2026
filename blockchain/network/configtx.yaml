@@ -1,0 +1,158 @@
+---
+Organizations:
+  - &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/agriseal.in/msp
+    Policies:
+      Reader:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writer:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admin:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+
+  - &FarmerOrg
+    Name: FarmerOrgMSP
+    ID: FarmerOrgMSP
+    MSPDir: crypto-config/peerOrganizations/farmer.agriseal.in/msp
+    Policies:
+      Reader:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin', 'FarmerOrgMSP.peer', 'FarmerOrgMSP.client')"
+      Writer:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin', 'FarmerOrgMSP.client')"
+      Admin:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.farmer.agriseal.in
+        Port: 7051
+
+  - &LogisticsOrg
+    Name: LogisticsOrgMSP
+    ID: LogisticsOrgMSP
+    MSPDir: crypto-config/peerOrganizations/logistics.agriseal.in/msp
+    Policies:
+      Reader:
+        Type: Signature
+        Rule: "OR('LogisticsOrgMSP.admin', 'LogisticsOrgMSP.peer', 'LogisticsOrgMSP.client')"
+      Writer:
+        Type: Signature
+        Rule: "OR('LogisticsOrgMSP.admin', 'LogisticsOrgMSP.client')"
+      Admin:
+        Type: Signature
+        Rule: "OR('LogisticsOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('LogisticsOrgMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.logistics.agriseal.in
+        Port: 8051
+
+  - &RetailerOrg
+    Name: RetailerOrgMSP
+    ID: RetailerOrgMSP
+    MSPDir: crypto-config/peerOrganizations/retailer.agriseal.in/msp
+    Policies:
+      Reader:
+        Type: Signature
+        Rule: "OR('RetailerOrgMSP.admin', 'RetailerOrgMSP.peer', 'RetailerOrgMSP.client')"
+      Writer:
+        Type: Signature
+        Rule: "OR('RetailerOrgMSP.admin', 'RetailerOrgMSP.client')"
+      Admin:
+        Type: Signature
+        Rule: "OR('RetailerOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('RetailerOrgMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.retailer.agriseal.in
+        Port: 9051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Read:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Write:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admin:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer.agriseal.in:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 100
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+Profiles:
+  TwoOrgsOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities: *OrdererCapabilities
+    Consortiums:
+      AgriSealConsortium:
+        Organizations:
+          - *FarmerOrg
+          - *LogisticsOrg
+          - *RetailerOrg
+
+  AgriSealChannel:
+    Consortium: AgriSealConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *FarmerOrg
+        - *LogisticsOrg
+        - *RetailerOrg
+      Capabilities: *ApplicationCapabilities

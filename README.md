@@ -68,6 +68,8 @@ India's agricultural cold-chain faces critical challenges:
 
 ## 🏗️ System Architecture
 
+![AgriSeal System Architecture](assets/architecture.jpg)
+
 ```
 ┌─────────────────┐     MQTT/4G      ┌──────────────────┐     Fabric SDK     ┌─────────────────────┐
 │   AgriSeal      │ ──────────────►  │   Cloud Backend   │ ───────────────►  │  Hyperledger Fabric  │

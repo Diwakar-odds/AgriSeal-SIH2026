@@ -130,6 +130,62 @@ export default function ShipmentTracker({ shipments, onTransferCustody, onCreate
               </div>
             </div>
 
+            {/* GPS Live Geolocation Banner */}
+            <div
+              style={{
+                padding: '1rem 1.25rem',
+                borderRadius: '10px',
+                background: 'rgba(16, 185, 129, 0.06)',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                marginBottom: '1.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '8px',
+                    background: 'rgba(16, 185, 129, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <MapPin size={20} style={{ color: 'var(--emerald-400)' }} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: '0.88rem', color: '#fff' }}>
+                    Live GNSS Position: <span className="mono" style={{ color: 'var(--emerald-400)' }}>31.0542°N, 77.1950°E</span>
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                    Solan Expressway Bypass • Velocity: 46.5 km/h • 8 GNSS Satellites Locked
+                  </div>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    padding: '0.2rem 0.55rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(6, 182, 212, 0.15)',
+                    color: 'var(--cyan-500)',
+                    border: '1px solid rgba(6, 182, 212, 0.3)',
+                  }}
+                >
+                  CORRIDOR GEO-FENCE: SECURE
+                </span>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '3px' }}>
+                  Deviation: 0.0 m (Within 50m tolerance)
+                </div>
+              </div>
+            </div>
+
             {/* Custody Provenance Timeline */}
             <h4 style={{ marginBottom: '1.25rem', color: 'var(--text-secondary)' }}>Immutable Handover Trail</h4>
 

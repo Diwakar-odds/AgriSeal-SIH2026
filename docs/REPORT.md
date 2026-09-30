@@ -163,33 +163,34 @@ The **core challenges** driving this problem:
 ┌─────────────────────────────────────────────────────────────────┐
 │                    AgriSeal IoT Node v1.0                       │
 │  ┌─────────────┐    ┌──────────────┐    ┌───────────────────┐   │
-│  │  SENSORS     │    │  ESP32-WROOM │    │  COMMUNICATION    │   │
-│  │             │    │              │    │                   │   │
+│  │  SENSORS &  │    │  ESP32-WROOM │    │  COMMUNICATION    │   │
+│  │  LOCATION   │    │              │    │                   │   │
 │  │ DHT22 ──────┼───►│  GPIO/ADC    │    │  SIM7600E (4G)    │   │
-│  │ (Temp/Hum)  │    │              │◄──►│  via UART         │   │
+│  │ (Temp/Hum)  │    │              │◄──►│  via UART2        │   │
 │  │             │    │  SPI Bus ────┼───►│                   │   │
-│  │ MQ135 ──────┼───►│  (Flash)     │    │  WiFi (built-in)  │   │
-│  │ (Ethylene)  │    │              │    │  BLE (built-in)   │   │
-│  │             │    │  I²C Bus ────┼───►│                   │   │
-│  │ Optional:   │    │  (Secure     │    └───────────────────┘   │
-│  │ GPS (NMEA)  │    │   Element)   │                            │
-│  └─────────────┘    │              │    ┌───────────────────┐   │
-│                     │  Hardware    │    │  LOCAL STORAGE     │   │
-│  ┌─────────────┐    │  AES/SHA    │    │                   │   │
-│  │  POWER       │    │  Engine     │    │  W25Q128 Flash    │   │
-│  │             │    │              │    │  (16MB SPI)       │   │
-│  │ Solar Panel ─┼───►│  Deep Sleep │    │                   │   │
-│  │ (6V 1W)     │    │  Co-proc    │    │  FM24C256 FRAM    │   │
-│  │             │    └──────────────┘    │  (32KB I²C)       │   │
-│  │ TP4056 ─────┤                       └───────────────────┘   │
-│  │ (Charger)   │                                                │
-│  │             │    ┌──────────────┐    ┌───────────────────┐   │
-│  │ 18650 Li-Ion┼───►│  3.3V LDO    │───►│  ATECC608A        │   │
-│  │ (3.7V)      │    │  (AMS1117)   │    │  (Secure Element) │   │
-│  └─────────────┘    └──────────────┘    │  I²C Address:0x60 │   │
-│                                         └───────────────────┘   │
+│  │ MQ135 ──────┼───►│  (Flash)     │    │  WiFi / BLE       │   │
+│  │ (Ethylene)  │    │              │    │                   │   │
+│  │             │    │  UART1 ──────┼───►│  NEO-6M GNSS      │   │
+│  │ GPS/GNSS ───┼───►│  (NMEA RX/TX)│    │  (GPS/GLONASS)    │   │
+│  │ (Active)    │    │              │    └───────────────────┘   │
+│  └─────────────┘    │  I²C Bus ────┼───►│  ATECC608A        │   │
+│                     │  (Crypto)    │    │  (Secure Element) │   │
+│  ┌─────────────┐    │              │    └───────────────────┘   │
+│  │  POWER       │    │  Hardware    │                            │
+│  │             │    │  AES/SHA    │    ┌───────────────────┐   │
+│  │ Solar Panel ─┼───►│  Engine      │    │  LOCAL STORAGE     │   │
+│  │ (6V 1W)     │    │              │    │                   │   │
+│  │             │    │  Deep Sleep  │    │  W25Q128 Flash    │   │
+│  │ TP4056 ─────┤    │  Co-proc     │    │  (16MB SPI)       │   │
+│  │ (Charger)   │    └──────────────┘    │                   │   │
+│  │             │                        │  FM24C256 FRAM    │   │
+│  │ 18650 Li-Ion┼───►┌──────────────┐    │  (32KB I²C)       │   │
+│  │ (3.7V)      │    │  3.3V LDO    │───►└───────────────────┘   │
+│  └─────────────┘    │  (AMS1117)   │                            │
+│                     └──────────────┘                            │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │  IP67 ENCLOSURE — Polycarbonate + Silicone Gasket         │   │
+│  │  Active GPS Ceramic Patch Antenna Skyward-Mounted         │   │
 │  │  Conformal Coating on PCB (Humiseal 1B73)                 │   │
 │  └──────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
@@ -202,20 +203,21 @@ The **core challenges** driving this problem:
 | 1 | Microcontroller | ESP32-WROOM-32D | Dual-core 240MHz, 4MB Flash, WiFi+BLE | 1 | 280 | 280 |
 | 2 | Temperature & Humidity Sensor | DHT22 / AM2302 | Temp: -40~80°C (±0.5°C), Humidity: 0–100% RH (±2%) | 1 | 180 | 180 |
 | 3 | Ethylene Gas Sensor | MQ135 / MiCS-5524 | C₂H₄ detection, analog output, 10–1000 ppm | 1 | 300 | 300 |
-| 4 | Cellular Module | SIM7600E-H | 4G LTE Cat-4, UART interface, GPS optional | 1 | 650 | 650 |
-| 5 | SPI Flash Memory | W25Q128JVSIQ | 128Mbit (16MB) SPI NOR Flash | 1 | 60 | 60 |
-| 6 | FRAM Memory | FM24C256-G | 256Kbit (32KB) I²C FRAM, 10¹⁴ R/W cycles | 1 | 80 | 80 |
-| 7 | Secure Element | ATECC608A-MAHDA | Hardware crypto, I²C, ECDSA P-256 | 1 | 120 | 120 |
-| 8 | Solar Panel | 6V 1W Mini Panel | 110×60mm, polycrystalline | 1 | 160 | 160 |
-| 9 | Battery Charger IC | TP4056 Module | Li-Ion charger with protection, USB-C input | 1 | 30 | 30 |
-| 10 | Battery | NCR18650B | 3.7V 3400mAh Li-Ion cell | 1 | 120 | 120 |
-| 11 | Voltage Regulator | AMS1117-3.3 | 3.3V LDO, 1A output | 1 | 10 | 10 |
-| 12 | PCB | Custom 2-Layer | FR-4, 1.6mm, HASL finish, 60×40mm | 1 | 50 | 50 |
-| 13 | Enclosure | IP67 Box | Polycarbonate, 100×68×50mm, cable gland | 1 | 250 | 250 |
-| 14 | Conformal Coating | Humiseal 1B73 | Acrylic conformal coating (per board) | 1 | 20 | 20 |
-| 15 | Passive Components | Resistors, Capacitors, LEDs | Assorted SMD 0805 | Lot | 30 | 30 |
-| 16 | Connectors & Wiring | JST-XH, Headers | Sensor connectors, antenna pigtail | Lot | 40 | 40 |
-| | | | | | **Total** | **₹2,380** |
+| 4 | Cellular Module | SIM7600E-H | 4G LTE Cat-4, UART interface | 1 | 650 | 650 |
+| 5 | GPS/GNSS Module | NEO-6M / ATGM336H | Multi-constellation GNSS, 2.5m CEP, UART1 | 1 | 220 | 220 |
+| 6 | SPI Flash Memory | W25Q128JVSIQ | 128Mbit (16MB) SPI NOR Flash | 1 | 60 | 60 |
+| 7 | FRAM Memory | FM24C256-G | 256Kbit (32KB) I²C FRAM, 10¹⁴ R/W cycles | 1 | 80 | 80 |
+| 8 | Secure Element | ATECC608A-MAHDA | Hardware crypto, I²C, ECDSA P-256 | 1 | 120 | 120 |
+| 9 | Solar Panel | 6V 1W Mini Panel | 110×60mm, polycrystalline | 1 | 160 | 160 |
+| 10 | Battery Charger IC | TP4056 Module | Li-Ion charger with protection, USB-C input | 1 | 30 | 30 |
+| 11 | Battery | NCR18650B | 3.7V 3400mAh Li-Ion cell | 1 | 120 | 120 |
+| 12 | Voltage Regulator | AMS1117-3.3 | 3.3V LDO, 1A output | 1 | 10 | 10 |
+| 13 | PCB | Custom 2-Layer | FR-4, 1.6mm, HASL finish, 60×40mm | 1 | 50 | 50 |
+| 14 | Enclosure | IP67 Box | Polycarbonate, 100×68×50mm, cable gland | 1 | 250 | 250 |
+| 15 | Conformal Coating | Humiseal 1B73 | Acrylic conformal coating (per board) | 1 | 20 | 20 |
+| 16 | Passive Components | Resistors, Capacitors, LEDs | Assorted SMD 0805 | Lot | 30 | 30 |
+| 17 | Connectors & Wiring | JST-XH, Antennas | Headers, active GPS patch, LTE antenna | Lot | 50 | 50 |
+| | | | | | **Total** | **₹2,580** |
 | | | | | | **At Scale (100+ units)** | **~₹1,800** |
 
 ### 3.3 Pin Mapping
@@ -226,6 +228,8 @@ The **core challenges** driving this problem:
 | GPIO 34 (ADC1_CH6) | MQ135 Analog Out | ADC | Ethylene level |
 | GPIO 16 (TX2) | SIM7600E RXD | UART2 | Cellular TX |
 | GPIO 17 (RX2) | SIM7600E TXD | UART2 | Cellular RX |
+| GPIO 32 (RX1) | NEO-6M GNSS TX | UART1 | GPS/GNSS NMEA RX |
+| GPIO 33 (TX1) | NEO-6M GNSS RX | UART1 | GPS/GNSS Config TX |
 | GPIO 18 (SCK) | W25Q128 CLK | SPI | Flash clock |
 | GPIO 19 (MISO) | W25Q128 DO | SPI | Flash data out |
 | GPIO 23 (MOSI) | W25Q128 DI | SPI | Flash data in |
@@ -607,7 +611,25 @@ Where:
 | 3.30 | 10% | Critical — reduce sampling rate |
 | 3.00 | 0% | Shutdown — save last data |
 
-### 5.5 Hash Chain Integrity Score
+### 5.5 Geolocation Tracking & Geo-Fencing (GPS/GNSS)
+
+| Parameter | Details |
+|---|---|
+| **Module** | u-blox NEO-6M / ATGM336H GNSS Receiver |
+| **Constellations** | GPS, GLONASS, QZSS, SBAS |
+| **Position Accuracy** | 2.5m CEP (Circular Error Probable) |
+| **Velocity Accuracy** | 0.1 m/s (approx. 0.36 km/h) |
+| **Time to First Fix (TTFF)** | Cold: 27s, Hot: 1s |
+| **Interface** | UART1 (GPIO 32 RX, GPIO 33 TX) at 9600 baud |
+| **Protocol** | NMEA-0183 ($GPRMC for Lat/Lon/Speed, $GPGGA for Alt/Sats) |
+
+**Derived Spatial Features:**
+
+- **Corridor Geo-Fence Deviation:** Computes perpendicular distance from approved transit highway (e.g., NH5 / NH44). Flags automatic alert if consignment deviates >2 km from scheduled route.
+- **Unscheduled Stop Detection:** Identifies dwell time where velocity = 0 km/h outside designated cold-storage hubs or authorized toll plazas.
+- **Dead-Reckoning & Tunnel Fallback:** When line-of-sight to GNSS satellites is obstructed (tunnels, indoor packing bays), the firmware retains the last verified 3D fix with an age-tag and marks `fix_status = false` until re-acquisition.
+
+### 5.6 Hash Chain Integrity Score
 
 | Metric | Computation |
 |---|---|
@@ -616,7 +638,7 @@ Where:
 | **Integrity Score** | `(Verified / Total) × 100%` — should always be 100% |
 | **Break Points** | Index of first failed hash — indicates tamper location |
 
-### 5.6 Connectivity Score
+### 5.7 Connectivity Score
 
 | Metric | Computation |
 |---|---|

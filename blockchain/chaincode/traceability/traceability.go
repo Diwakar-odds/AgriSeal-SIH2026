@@ -65,6 +65,10 @@ type SensorDigest struct {
 	AvgHumidity    float64 `json:"avgHumidity"`
 	AvgEthylenePpm float64 `json:"avgEthylenePpm"`
 	TamperTriggered bool   `json:"tamperTriggered"`
+	Latitude       float64 `json:"latitude"`
+	Longitude      float64 `json:"longitude"`
+	AltitudeM      float64 `json:"altitudeM"`
+	SpeedKmh       float64 `json:"speedKmh"`
 	TxID           string  `json:"txId"`
 }
 
@@ -185,6 +189,9 @@ func (s *SmartContract) RecordSensorDigest(
 	avgHum float64,
 	avgEth float64,
 	tamper bool,
+	latitude float64,
+	longitude float64,
+	speed float64,
 ) error {
 	shipment, err := s.GetShipment(ctx, shipmentID)
 	if err != nil {
@@ -208,6 +215,9 @@ func (s *SmartContract) RecordSensorDigest(
 		AvgHumidity:     avgHum,
 		AvgEthylenePpm:  avgEth,
 		TamperTriggered: tamper,
+		Latitude:        latitude,
+		Longitude:       longitude,
+		SpeedKmh:        speed,
 		TxID:            txID,
 	}
 

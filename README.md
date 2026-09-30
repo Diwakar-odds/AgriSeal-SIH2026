@@ -56,6 +56,7 @@ India's agricultural cold-chain faces critical challenges:
 | Feature | How It Works |
 |---|---|
 | 🌡️ **SENSE** | Temperature, Humidity & Ethylene monitoring |
+| 📍 **TRACK** | GPS/GNSS Real-time Location, Speed & Route tracking |
 | 💰 **LOW-COST NODE** | ₹2,100/unit — Plug-and-play, Reusable |
 | 📴 **OFFLINE MODE** | Sense & Store locally when no network |
 | 🔄 **AUTO-SYNC** | Reconnect & Securely sync stored data |
@@ -76,10 +77,11 @@ India's agricultural cold-chain faces critical challenges:
 │   IoT Node      │                  │   (Node.js +      │                   │  (Permissioned       │
 │                 │                  │    PostgreSQL)     │                   │   Blockchain)        │
 │  ESP32 + Sensors│  ◄── Auto-Sync   │                   │                   │                      │
-│  + Hash Chain   │     on Reconnect │   MQTT Broker     │                   │  Chaincode (Go)      │
-│  + Flash/FRAM   │                  │   (Mosquitto)     │                   │  Hash Digests        │
-│  + AES Crypto   │                  │                   │                   │  Compliance Certs    │
-│  + Solar Power  │                  │   REST API        │                   │                      │
+│  + GPS / GNSS   │     on Reconnect │   MQTT Broker     │                   │  Chaincode (Go)      │
+│  + Hash Chain   │                  │   (Mosquitto)     │                   │  Hash Digests        │
+│  + Flash/FRAM   │                  │                   │                   │  Compliance Certs    │
+│  + AES Crypto   │                  │   REST API        │                   │  Geo Provenance      │
+│  + Solar Power  │                  │                   │                   │                      │
 └─────────────────┘                  └────────┬──────────┘                   └──────────────────────┘
                                               │
                                               │ WebSocket
@@ -87,7 +89,7 @@ India's agricultural cold-chain faces critical challenges:
                                      ┌──────────────────┐
                                      │  React Dashboard  │
                                      │  - Live Sensors   │
-                                     │  - Shipment Map   │
+                                     │  - GPS Map / Route│
                                      │  - Ledger Explorer│
                                      │  - Alert Panel    │
                                      └──────────────────┘
@@ -102,13 +104,14 @@ India's agricultural cold-chain faces critical challenges:
 | ESP32-WROOM-32 | Dual-core 240MHz, WiFi+BLE | 250–350 |
 | DHT22 | Temp: -40~80°C, Humidity: 0–100% RH | 150–200 |
 | MQ135 / MiCS-5524 | Ethylene (C₂H₄) gas detection | 200–400 |
+| NEO-6M / ATGM336H | Multi-constellation GPS/GNSS receiver | 200–250 |
 | SIM7600E / BC66 | 4G / NB-IoT cellular module | 500–800 |
 | W25Q128 / FM24C256 | 16MB Flash / 32KB FRAM | 50–100 |
 | ATECC608A | Secure element (hardware crypto) | 100–150 |
 | 6V 1W Solar Panel | Solar energy harvesting | 150–200 |
 | TP4056 + 18650 | Li-Ion charging + 3.7V battery | 150–200 |
 | IP67 Enclosure | Waterproof, dustproof casing | 200–300 |
-| **Total/Node** | | **₹1,750–2,700** |
+| **Total/Node** | | **₹1,950–2,950** |
 
 ---
 
@@ -118,6 +121,7 @@ India's agricultural cold-chain faces critical challenges:
 |---|---|
 | **Microcontroller** | ESP32 / STM32 |
 | **Sensors** | DHT22 (Temp/Humidity), MQ135 (Ethylene) |
+| **Location** | GPS / GNSS (u-blox NEO-6M / ATGM336H) |
 | **Connectivity** | 4G / NB-IoT via MQTT / MQTT-SN |
 | **Local Storage** | Flash (W25Q128) / FRAM (FM24C256) |
 | **Security** | AES-128 Encryption, SHA-256 Hash Chain, ATECC608A |

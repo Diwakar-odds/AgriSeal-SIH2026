@@ -43,6 +43,11 @@
 #define SIM_PWRKEY_PIN      25      // GPIO 25 — SIM7600 power key
 #define SIM_RST_PIN         26      // GPIO 26 — SIM7600 reset
 
+// GPS/GNSS Module (u-blox NEO-6M / ATGM336H) — UART1
+#define GPS_RX_PIN          32      // GPIO 32 (RX1) ← GPS TX
+#define GPS_TX_PIN          33      // GPIO 33 (TX1) → GPS RX
+#define GPS_BAUD_RATE       9600    // Default NMEA baud rate
+
 // Status LED
 #define STATUS_LED_PIN      2       // GPIO 2 — Onboard LED
 

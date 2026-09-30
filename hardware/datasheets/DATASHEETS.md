@@ -8,6 +8,7 @@
 | DHT22 / AM2302 | [Aosong Datasheet](https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf) |
 | MQ135 Gas Sensor | [Hanwei Electronics](https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf) |
 | SIM7600E-H | [SIMCom Datasheet](https://simcom.ee/documents/SIM7600E-H/SIM7600E-H_Hardware_Design_V1.02.pdf) |
+| NEO-6M / ATGM336H GNSS | [u-blox NEO-6 Datasheet](https://content.u-blox.com/sites/default/files/products/documents/NEO-6_DataSheet_%28GPS.G6-HW-09005%29.pdf) |
 | W25Q128JVSIQ | [Winbond Datasheet](https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf) |
 | FM24C256 FRAM | [Cypress/Infineon](https://www.infineon.com/dgdl/Infineon-FM24C256-DataSheet-v08_00-EN.pdf) |
 | ATECC608A | [Microchip Datasheet](https://ww1.microchip.com/downloads/en/DeviceDoc/ATECC608A-CryptoAuthentication-Device-Summary-Data-Sheet-DS40001977B.pdf) |

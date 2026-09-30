@@ -36,6 +36,7 @@
 - **Reset button:** Recessed button accessible with paperclip
 - **QR code label:** Device ID + setup URL printed on enclosure
 - **Solar panel mount:** Top-surface mounting bracket with silicone adhesive
+- **GPS/GNSS Antenna:** Internal 25×25mm ceramic active patch antenna mounted skyward directly under top lid
 - **Tamper switch:** Micro switch detects lid removal → triggers alert
 
 ## Assembly Notes

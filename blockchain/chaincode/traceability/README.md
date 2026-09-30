@@ -17,7 +17,7 @@ The smart contract manages three key entities on the distributed ledger:
 |---|---|---|
 | `InitLedger` | None | Bootstraps sample shipment for network testing |
 | `CreateShipment` | `id, produceType, qtyKg, origin, dest, custodian, deviceId` | Registers new shipment on-chain |
-| `RecordSensorDigest` | `shipmentId, blockIndex, blockHash, avgTemp, maxTemp, minTemp, avgHum, avgEth, tamper` | Commits cryptographic reading batch |
+| `RecordSensorDigest` | `shipmentId, blockIndex, blockHash, avgTemp, maxTemp, minTemp, avgHum, avgEth, tamper, lat, lon, spd` | Commits cryptographic reading batch with GPS geo-coordinates |
 | `TransferOwnership` | `shipmentId, newCustodian, location, notes` | Transfers custody from current holder to new stakeholder |
 | `FlagBreach` | `shipmentId, breachType, recordedVal, thresholdVal, severity` | Records temperature excursion or tamper |
 | `GetShipment` | `id` | Queries current shipment state |

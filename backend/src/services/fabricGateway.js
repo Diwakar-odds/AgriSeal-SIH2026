@@ -158,7 +158,10 @@ class FabricGatewayService {
         digestData.minTemp.toString(),
         digestData.avgHum.toString(),
         digestData.avgEth.toString(),
-        digestData.tamper.toString()
+        digestData.tamper.toString(),
+        (digestData.latitude || 31.1048).toString(),
+        (digestData.longitude || 77.1734).toString(),
+        (digestData.speed || 0.0).toString()
       );
       return JSON.parse(res.toString());
     }

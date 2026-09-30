@@ -50,6 +50,9 @@ extern bool power_mgmt_should_reduce_sampling();
 extern bool power_mgmt_should_shutdown();
 extern void power_mgmt_enter_deep_sleep(uint64_t duration_us);
 
+extern void gps_init();
+extern bool gps_read(float &latitude, float &longitude, float &altitude, float &speed, int &satellites, bool &fix_status);
+
 // ============================================================
 // Global State
 // ============================================================
@@ -71,6 +74,14 @@ float temperature = 0.0;
 float humidity = 0.0;
 float ethylene_ppm = 0.0;
 float battery_voltage = 0.0;
+
+// Geolocation buffer
+float gps_latitude = 31.1048;
+float gps_longitude = 77.1734;
+float gps_altitude = 2205.0;
+float gps_speed = 0.0;
+int   gps_satellites = 0;
+bool  gps_has_fix = false;
 
 // JSON payload buffer
 char jsonPayload[512];
@@ -101,6 +112,7 @@ void setup() {
 
     // Initialize all modules
     sensors_init();
+    gps_init();
     crypto_init();
     hash_chain_init();
     offline_store_init();
@@ -119,15 +131,19 @@ void loop() {
     switch (currentState) {
 
         // -----------------------------------------------
-        // STATE: SENSE — Read all sensors
+        // STATE: SENSE — Read all sensors & GPS
         // -----------------------------------------------
         case STATE_SENSE: {
-            Serial.println("[SENSE] Reading sensors...");
+            Serial.println("[SENSE] Reading sensors and GNSS...");
 
             sensors_read(temperature, humidity, ethylene_ppm, battery_voltage);
+            gps_read(gps_latitude, gps_longitude, gps_altitude, gps_speed, gps_satellites, gps_has_fix);
 
             Serial.printf("[SENSE] Temp=%.1f°C  Humidity=%.1f%%  Ethylene=%.1f ppm  Battery=%.2fV\n",
                           temperature, humidity, ethylene_ppm, battery_voltage);
+            Serial.printf("[GNSS]  Lat=%.4f  Lon=%.4f  Alt=%.1fm  Spd=%.1fkm/h  Sats=%d  Fix=%s\n",
+                          gps_latitude, gps_longitude, gps_altitude, gps_speed, gps_satellites,
+                          gps_has_fix ? "YES" : "NO");
 
             // Check for tamper
             if (sensors_check_tamper()) {
@@ -161,7 +177,7 @@ void loop() {
 
             readingIndex++;
 
-            // Build JSON payload
+            // Build JSON payload with environmental + GPS telemetry
             snprintf(jsonPayload, sizeof(jsonPayload),
                 "{"
                 "\"idx\":%d,"
@@ -170,6 +186,10 @@ void loop() {
                 "\"t\":%.2f,"
                 "\"h\":%.2f,"
                 "\"e\":%.2f,"
+                "\"lat\":%.4f,"
+                "\"lon\":%.4f,"
+                "\"spd\":%.1f,"
+                "\"sats\":%d,"
                 "\"bv\":%.2f,"
                 "\"soc\":%.1f,"
                 "\"prev\":\"%s\""
@@ -180,6 +200,10 @@ void loop() {
                 temperature,
                 humidity,
                 ethylene_ppm,
+                gps_latitude,
+                gps_longitude,
+                gps_speed,
+                gps_satellites,
                 battery_voltage,
                 power_mgmt_get_soc(),
                 hash_chain_get_prev_hash()

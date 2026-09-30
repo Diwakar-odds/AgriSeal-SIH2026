@@ -5,6 +5,7 @@ Node.js + Express backend service integrating IoT edge devices (ESP32), MQTT mes
 ## Features
 
 - **MQTT Ingestion & Stream Processing**: Subscribes to node telemetry topics (`agriseal/+/data`), decrypts and verifies packets.
+- **GPS/GNSS Geolocation & Geo-Fencing**: Ingests real-time latitude, longitude, speed, and altitude to anchor consignment position along the cold-chain corridor.
 - **Cryptographic Hash-Chain Verification**: Recomputes SHA-256 block hashes and checks sequence continuity to prevent sensor spoofing or record dropping.
 - **Blockchain Gateway**: Interacts with Hyperledger Fabric smart contract (`traceability.go`) to commit sensor batch digests and custody transfers.
 - **WebSocket Server**: Streams live temperature, humidity, ethylene, battery level, and breach alerts to the frontend dashboard.

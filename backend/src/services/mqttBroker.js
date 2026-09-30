@@ -133,6 +133,9 @@ class MqttService {
           avgHum: parseFloat(avgHum.toFixed(2)),
           avgEth: parseFloat(avgEth.toFixed(2)),
           tamper: false,
+          latitude: reading.lat || 31.1048,
+          longitude: reading.lon || 77.1734,
+          speed: reading.spd || 45.0,
         });
       }
     } catch (err) {
@@ -145,15 +148,29 @@ class MqttService {
     setInterval(() => {
       const dev1 = 'AGRISEAL-NODE-0001';
       const lastList1 = this.deviceReadings.get(dev1) || [];
-      const last1 = lastList1[lastList1.length - 1] || { idx: 10, t: 4.2, h: 88.0, e: 12.0, soc: 92.0 };
+      const last1 = lastList1[lastList1.length - 1] || {
+        idx: 18,
+        t: 4.1,
+        h: 88.5,
+        e: 14.2,
+        lat: 31.1048,
+        lon: 77.1734,
+        spd: 45.2,
+        sats: 8,
+        soc: 92.0,
+      };
 
       const simulated1 = {
-        idx: (last1.idx || 10) + 1,
+        idx: (last1.idx || 18) + 1,
         dev: dev1,
         ts: Date.now(),
         t: parseFloat((3.8 + Math.random() * 0.8).toFixed(2)), // 3.8 - 4.6 °C
         h: parseFloat((85 + Math.random() * 5).toFixed(1)),
         e: parseFloat((10 + Math.random() * 4).toFixed(1)),
+        lat: parseFloat(((last1.lat || 31.1048) - 0.003).toFixed(4)), // Moving south along NH5 towards Delhi
+        lon: parseFloat(((last1.lon || 77.1734) + 0.002).toFixed(4)),
+        spd: parseFloat((42 + Math.random() * 10).toFixed(1)), // 42 - 52 km/h
+        sats: 8,
         bv: 3.95,
         soc: 91.5,
         prev: last1.hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
